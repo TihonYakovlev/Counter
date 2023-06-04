@@ -15,14 +15,19 @@ import androidx.compose.ui.unit.dp
 import com.tihonyakovlev.wordscounter.presentation.viewmodels.FileUploadViewModel
 import org.koin.androidx.compose.getViewModel
 
+
 @Composable
 fun ChooseFileScreen(viewModel: FileUploadViewModel = getViewModel()) {
 
     val characterCount by viewModel.characterCount.collectAsState()
+    val wordsCount by viewModel.wordsCount.collectAsState()
+    val foreignWordsCount by viewModel.foreignWordsCount.collectAsState()
 
     val pickFileLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewModel.processFile(uri!!)
+            viewModel.charactersCount(uri!!)
+            viewModel.wordsCount(uri!!)
+            viewModel.foreignWordsCount(uri!!)
         }
 
 
@@ -38,6 +43,14 @@ fun ChooseFileScreen(viewModel: FileUploadViewModel = getViewModel()) {
         Text("")
         Text(
             text = "Количество символов: $characterCount",
+            modifier = Modifier.padding(16.dp)
+        )
+        Text(
+            text = "Количество слов: $wordsCount",
+            modifier = Modifier.padding(16.dp)
+        )
+        Text(
+            text = "Количество иностранных слов: $foreignWordsCount",
             modifier = Modifier.padding(16.dp)
         )
     }
